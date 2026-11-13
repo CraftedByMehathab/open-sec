@@ -29,11 +29,11 @@ flowchart LR
 6. **Chunks follow Items** and store ticker, form, period, Item and offsets, for chips like `AMD 10-K 2025 · Item 7`.
 7. **Search** merges pgvector and full-text results by reciprocal rank fusion.
 8. **Restated** means a later filing reports a different value; both are kept and the answer flags it (R-09).
-9. **Follow-ups** use a LangGraph Postgres checkpointer (R-04). **Needs approval:** it breaks "only `ingest/` writes the database". The alternative, in memory, loses chats on restart.
+9. **Follow-ups** use a LangGraph Postgres checkpointer in its own `agent_state` schema (R-04). *Approved* as the one exception to "only `ingest/` writes the database".
 10. **Answers** are structured (summary, table or bullets, caveats) and not streamed (R-02).
 11. **Cost** comes from token counts and prices in `.env`.
 12. **New filings** are added with `uv run -m ingest AMD`, not an API (R-12).
-13. **Scoring.** Figures, "Not disclosed" and latency are checked in Python. **Needs a choice:** an LLM judge for accuracy and citation support (breaks "only `agent/` calls the LLM") or analyst grading. The 50 questions wait on SPEC open question 2.
+13. **Scoring.** Figures, "Not disclosed" and latency are checked in Python; an LLM judge in `evals/` grades accuracy and citation support. *Approved* as the one exception to "only `agent/` calls the LLM". The 50 questions wait on SPEC open question 2.
 14. **Out of scope:** 8-K, Form 4, proxies, sign-in, exports, stock prices.
 
 ## API

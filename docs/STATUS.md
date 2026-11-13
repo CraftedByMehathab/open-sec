@@ -17,6 +17,7 @@ None yet. `npm run evals` scores the agent against `evals/` and reports each tar
 ## Decisions
 
 - The agent framework is chosen in `labs/` before the agent is built.
+- Approved exceptions to `docs/CODE_STANDARDS.md` rule 10: the agent's LangGraph checkpointer writes the `agent_state` schema, and `evals/` uses an LLM judge.
 
 ## Known gaps
 
