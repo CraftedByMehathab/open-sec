@@ -8,9 +8,9 @@
 | Search          | pgvector plus Postgres full-text                                            |
 | SEC data        | `httpx`                                                                     |
 | Parsing         | BeautifulSoup, lxml                                                         |
-| Embeddings      | Voyage AI                                                                   |
-| LLM             | `claude-sonnet-5-5` by default, or `MODEL_NAME` if set                      |
-| Agent framework | Chosen after running some experiments in `labs/` (TBD)                      |
+| Embeddings      | OpenAI `text-embedding-3-large`                                             |
+| LLM             | `gpt-6.1-terra` at medium reasoning effort by default, or `MODEL_NAME`      |
+| Agent framework | LangGraph (`create_agent`), confirmed in the Phase 0 lab                   |
 | Frontend        | Vite, React, TypeScript, shadcn/ui (preset `b1uGaJrhQ`); Node (current LTS) |
 | Observability   | MLflow tracing; logs via `structlog`                                        |
 | Experiments     | Jupyter, tracked in MLflow                                                  |

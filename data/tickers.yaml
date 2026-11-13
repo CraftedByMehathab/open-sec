@@ -1,0 +1,8 @@
+# Companies in the pilot (SPEC R-12). The other 18 wait on SPEC open question 1.
+companies:
+  - ticker: AMD
+    cik: 2488
+    name: Advanced Micro Devices, Inc.
+  - ticker: NVDA
+    cik: 1045810
+    name: NVIDIA Corporation

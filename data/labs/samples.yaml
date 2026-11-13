@@ -1,0 +1,88 @@
+# Phase 0 lab samples (plan decision 5). Drafted by the coding agent; an analyst checks each one
+# and sets reviewed: true. Expected figures name an XBRL concept and fiscal period; the lab
+# notebook resolves their values from companyfacts. These are separate from evals/ (R-11).
+samples:
+  - id: S01
+    kind: fact
+    question: What was AMD's revenue in fiscal 2025?
+    figures:
+      - { ticker: AMD, concept: RevenueFromContractWithCustomerExcludingAssessedTax, period: FY2025 }
+    follow_up:
+      question: And the year before?
+      figures:
+        - { ticker: AMD, concept: RevenueFromContractWithCustomerExcludingAssessedTax, period: FY2024 }
+    reviewed: false
+
+  - id: S02
+    kind: fact
+    question: What was NVIDIA's net income for fiscal 2026?
+    figures:
+      - { ticker: NVDA, concept: NetIncomeLoss, period: FY2026 }
+    reviewed: false
+
+  - id: S03
+    kind: fact
+    question: What was NVIDIA's revenue in the third quarter of fiscal 2026?
+    figures:
+      - { ticker: NVDA, concept: Revenues, period: Q3 FY2026 }
+    reviewed: false
+
+  - id: S04
+    kind: fact
+    question: How much did AMD spend on research and development in fiscal 2025?
+    figures:
+      - { ticker: AMD, concept: ResearchAndDevelopmentExpense, period: FY2025 }
+    reviewed: false
+
+  - id: S05
+    kind: comparison
+    question: By what percentage did AMD's revenue grow from fiscal 2024 to fiscal 2025?
+    figures:
+      - { ticker: AMD, concept: RevenueFromContractWithCustomerExcludingAssessedTax, period: FY2024 }
+      - { ticker: AMD, concept: RevenueFromContractWithCustomerExcludingAssessedTax, period: FY2025 }
+    calculation: { operation: percent_change }
+    reviewed: false
+
+  - id: S06
+    kind: comparison
+    question: Compare AMD's and NVIDIA's research and development expense in their latest fiscal years.
+    figures:
+      - { ticker: AMD, concept: ResearchAndDevelopmentExpense, period: FY2025 }
+      - { ticker: NVDA, concept: ResearchAndDevelopmentExpense, period: FY2026 }
+    reviewed: false
+
+  - id: S07
+    kind: comparison
+    question: Which had higher diluted earnings per share in its latest fiscal year, AMD or NVIDIA?
+    figures:
+      - { ticker: AMD, concept: EarningsPerShareDiluted, period: FY2025 }
+      - { ticker: NVDA, concept: EarningsPerShareDiluted, period: FY2026 }
+    reviewed: false
+
+  - id: S08
+    kind: risk
+    question: What does NVIDIA's latest 10-K say about export controls as a risk?
+    passage: { ticker: NVDA, form: 10-K, item: Item 1A }
+    reviewed: false
+
+  - id: S09
+    kind: risk
+    question: What risks does AMD's latest 10-K describe about relying on third-party manufacturers?
+    passage: { ticker: AMD, form: 10-K, item: Item 1A }
+    reviewed: false
+
+  - id: S10
+    kind: not_disclosed
+    question: How much revenue did NVIDIA earn from Tesla in fiscal 2026?
+    reviewed: false
+
+  # Refusal checks (R-10): answered politely, with no tool calls.
+  - id: R01
+    kind: refusal
+    question: What is NVIDIA's current stock price?
+    reviewed: false
+
+  - id: R02
+    kind: refusal
+    question: Should I buy AMD stock right now?
+    reviewed: false

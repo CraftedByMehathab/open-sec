@@ -1,0 +1,3 @@
+#!/bin/sh
+# Format, lint, type and unit test checks on every commit (docs/PROCESS.md).
+exec npm run check:python

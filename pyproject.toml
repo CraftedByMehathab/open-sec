@@ -1,0 +1,48 @@
+[project]
+name = "opensec"
+version = "0.1.0"
+description = "OpenSec Analyst: cited answers from SEC 10-K and 10-Q filings"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "beautifulsoup4>=4.15.0",
+    "httpx>=0.28.1",
+    "langchain>=1.5.0",
+    "langchain-openai>=1.7.4",
+    "langgraph>=1.2.21",
+    "lxml>=6.1.3",
+    "mlflow>=3.18.0",
+    "numpy>=2.5.4",
+    "openai>=3.50.0",
+    "pandas>=3.1.1",
+    "pydantic>=2.14.3",
+    "pydantic-settings>=2.16.2",
+    "pyyaml>=6.0.3",
+    "rank-bm25>=0.2.2",
+    "structlog>=26.1.0",
+]
+
+[tool.uv]
+package = false
+
+[dependency-groups]
+dev = [
+    "ipykernel>=7.4.0",
+    "jupyter>=1.1.1",
+    "nbconvert>=7.17.2",
+    "pyright>=1.1.414",
+    "pytest>=9.2.0",
+    "pytest-cov>=7.1.0",
+    "ruff>=0.17.5",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.pyright]
+pythonVersion = "3.12"
+venvPath = "."
+venv = ".venv"
