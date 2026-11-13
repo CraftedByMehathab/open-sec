@@ -1,0 +1,12 @@
+{
+  "name": "opensec",
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "prepare": "git config core.hooksPath .githooks",
+    "check": "npm run check:python",
+    "check:python": "uv run ruff check . && uv run ruff format --check . && uv run pyright"
+  }
+}

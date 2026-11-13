@@ -52,22 +52,22 @@ flowchart LR
 
 Prove LangGraph does what the agent needs, on real filings, and set up repo tooling.
 
-- Repo skeleton: `pyproject.toml`, `package.json` scripts, ruff, pyright, pytest, pre-commit hook, `.env.example`, Docker Compose (Postgres, MLflow).
+- Repo skeleton: `pyproject.toml`, `package.json` scripts, ruff, pyright, pre-commit hook, `.env.example`, Docker Compose (Postgres, MLflow). The lab code lives in the notebook, so pytest joins `npm run check` in Phase 1.
 - `data/tickers.yaml`, `labs/BRIEF.md`, `data/labs/samples.yaml`.
 - A notebook that caches AMD and NVIDIA filings, indexes them in memory, and runs a LangGraph agent with `search_passages`, `get_fact` and `compute`, logging to MLflow.
 
 Success criteria:
 
-- [ ] `uv sync && npm install` and `docker compose up -d` work; `npm run check` passes.
-- [ ] The notebook runs end to end with no second over 9 EDGAR requests (R-12).
-- [ ] All 10 samples answer as summary, table or bullets, caveats (R-02).
-- [ ] Every figure matches XBRL, with unit and fiscal period (R-05, R-08, R-09).
-- [ ] Every claim is cited, and every quote is in its passage (R-03).
-- [ ] The no-answer sample says "Not disclosed in the filings." (R-07).
-- [ ] "And the year before?" works on the same thread (R-04).
-- [ ] Stock-price and buy questions are refused with no tool calls (R-10).
-- [ ] Every run is an MLflow trace with tokens; median latency under 15 s (R-06, R-13).
-- [ ] The decision is in `docs/STATUS.md` and `docs/TECH_STACK.md`.
+- [x] `uv sync && npm install` and `docker compose up -d` work; `npm run check` passes.
+- [x] The notebook runs end to end with no second over 9 EDGAR requests (R-12).
+- [x] All 10 samples answer as summary, table or bullets, caveats (R-02).
+- [x] Every figure matches XBRL, with unit and fiscal period (R-05, R-08, R-09).
+- [x] Every claim is cited, and every quote is in its passage (R-03).
+- [x] The no-answer sample says "Not disclosed in the filings." (R-07).
+- [x] "And the year before?" works on the same thread (R-04).
+- [x] Stock-price and buy questions are refused with no tool calls (R-10).
+- [x] Every run is an MLflow trace with tokens; median latency under 15 s (R-06, R-13).
+- [x] The decision is in `docs/STATUS.md` and `docs/TECH_STACK.md`.
 
 ## Phase 1: Ingest
 
@@ -75,11 +75,12 @@ Load filings and XBRL into Postgres, repeatably.
 
 - `ingest/` owns the models and Alembic migrations: companies, filings, chunks (Item, offsets, embedding, `tsvector`), XBRL facts (with restated flag).
 - Four modules: `edgar_client`, `filing_parser`, `xbrl_facts`, `loader`.
+- pytest at 80% coverage joins `npm run check` and the pre-commit hook.
 - `uv run -m ingest` loads `data/tickers.yaml`; `uv run -m ingest AMD` loads one ticker; reruns skip loaded filings.
 
 Success criteria:
 
-- [ ] `uv run pytest ingest` passes, with EDGAR and Voyage mocked.
+- [ ] `uv run pytest ingest` passes, with EDGAR and the embeddings API mocked.
 - [ ] Tests confirm no more than 9 requests a second and the `.env` User-Agent (R-12).
 - [ ] A test confirms a restated fact is flagged and both values are kept (R-09).
 - [ ] Loading AMD and NVIDIA matches the EDGAR submissions list; a rerun adds nothing.
@@ -92,7 +93,7 @@ Answer one question end to end through tools.
 
 - Read-only data access over the `ingest/` models; tools `search_passages`, `get_fact`, `list_filings`, `compute`.
 - Structured answers, the Python renderer and the citation check; `agent/instructions.md`.
-- The LangGraph graph on `MODEL_NAME` (default `claude-sonnet-5-5`), with checkpointer and MLflow tracing; `uv run -m agent "question"`.
+- The LangGraph graph on `MODEL_NAME` (default `gpt-6.1-terra`, medium reasoning), with checkpointer and MLflow tracing; `uv run -m agent "question"`.
 
 Success criteria:
 

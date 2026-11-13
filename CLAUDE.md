@@ -32,7 +32,7 @@ flowchart LR
   EDGAR[SEC EDGAR] --> ingest
 ```
 
-- `ingest/` is offline: fetch from EDGAR (`httpx`, under 10 req/s, User-Agent from `.env`), parse (BeautifulSoup/lxml), chunk, embed (Voyage AI), load. XBRL facts are the source of truth for figures.
+- `ingest/` is offline: fetch from EDGAR (`httpx`, under 10 req/s, User-Agent from `.env`), parse (BeautifulSoup/lxml), chunk, embed (OpenAI `text-embedding-3-large`), load. XBRL facts are the source of truth for figures.
 - Retrieval is hybrid: pgvector plus Postgres full-text.
 - The agent framework is undecided; it is chosen by experiments in `labs/` first. Product code never imports from `labs/`.
 - EDGAR, the LLM and embeddings sit behind small swappable interfaces. Tests use a stub model and never call a real one.
