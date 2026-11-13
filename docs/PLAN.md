@@ -84,8 +84,12 @@ Success criteria:
 
 Load filings and XBRL facts into Postgres, tested and repeatable. Everything after this phase reads from here.
 
-- An Alembic schema with tables for companies, filings, sections, chunks (embedding plus a `tsvector` column) and XBRL facts (concept, value, unit, period start and end, fiscal year and period, accession number, restated flag).
-- `ingest/` modules: an EDGAR client (rate limiter and User-Agent behind one small interface), a filings fetcher, an Item parser, a chunker, an embedder (Voyage behind its own interface), an XBRL loader with restatement detection (decision 8), and a loader.
+- `ingest/` owns the schema: the SQLAlchemy models and Alembic migrations live there, and the data access in Phase 2 imports the models read-only. There are four tables: companies, filings, chunks and XBRL facts. A chunk carries its Item label and offsets (decision 6), along with its embedding and a `tsvector` column, so there's no separate sections table. An XBRL fact holds the concept, value, unit, period start and end, fiscal year and period, accession number and restated flag.
+- Four `ingest/` modules:
+  - `edgar_client`: the rate limiter and User-Agent behind one small interface
+  - `filing_parser`: the Item split and chunking
+  - `xbrl_facts`: companyfacts with restatement detection (decision 8)
+  - `loader`: embeds with Voyage, behind its own interface, and writes the rows
 - `uv run -m ingest` loads everything in `data/tickers.yaml`, and `uv run -m ingest AMD` loads a single ticker. Both skip filings that are already loaded.
 
 Success criteria:
@@ -102,7 +106,7 @@ Success criteria:
 
 The agent answers one question end to end, through its tools alone.
 
-- Read-only data access: hybrid search (decision 7), fact lookup and filing listing.
+- Read-only data access over the models in `ingest/`: hybrid search (decision 7), fact lookup and filing listing.
 - `agent/` tools: `search_passages`, `get_fact`, `list_filings` and `compute`. Each returns ids the answer can cite.
 - The structured answer model (decision 10), a Python renderer for figures and chips, and the citation check (the shape of the build).
 - `agent/instructions.md`: how to answer, when to say "Not disclosed in the filings.", how to label periods and flag restatements, and how to refuse.
