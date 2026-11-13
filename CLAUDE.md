@@ -43,4 +43,3 @@ flowchart LR
 
 - "Plan" means write `docs/PLAN.md` only, then stop. "Implement" means build every phase in order, ticking criteria and updating `docs/STATUS.md` per phase, committing with requirement ids.
 - Never `--no-verify`, never push, never lower thresholds or exclude files to go green; ask instead.
-- The directory is not yet a git repository; it will need `git init` before the first commit.
