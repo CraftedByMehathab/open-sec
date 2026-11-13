@@ -29,17 +29,19 @@ Run on 2026-11-13 with `gpt-6.1-terra` at medium reasoning and `text-embedding-3
 | --------------------------------------------------- | ------------------------ |
 | Samples passing every check (12 plus the follow-up) | 13 of 13                 |
 | Most EDGAR requests in any second                   | 9                        |
-| Median latency                                      | 7.3 s (max 17.2 s, risk) |
-| Median tokens per answer                            | 5,706                    |
+| Median latency                                      | 7.8 s (max 15.6 s, risk) |
+| Median tokens per answer                            | 8,105                    |
+| Answers that passed the checks first time           | 9 of 13                  |
 | Answers with one MLflow trace and token counts      | 13 of 13                 |
 
 **Decision:** LangGraph (`create_agent`, with a structured `Answer` output and a checkpointer) is the agent framework. `docs/TECH_STACK.md` is updated.
 
 What the lab taught us, for Phases 1 and 2:
 
-- **Fiscal labels:** companyfacts tags each value with the fiscal year of the filing that reported it, not of the period. Labels have to come from the filing that closes the period.
-- **Revisions:** about 1,300 facts differ between filings. Most are reclassifications in older periods. A value whose sign alone flipped is a tagging change and isn't flagged.
-- **Answer format:** the model sometimes skips the table or bullets. Rejecting the answer and retrying on the same thread fixes it.
+- **Fiscal labels:** companyfacts tags each value with the fiscal year of the filing that reported it, not of the period. A period's label comes from the filing that closes it, and the value's length in months says whether it is a year, a quarter or 6 or 9 months to date. Values of other lengths are left out.
+- **Revisions:** about 1,200 facts differ between filings. Most are reclassifications in older periods. A value whose sign alone flipped is a tagging change and isn't flagged.
+- **Answer format:** the model sometimes skips the table or bullets. The `Answer` schema's validator runs the citation check, and `ToolStrategy` sends a failure back to the model in the same run. 4 of 13 answers needed a retry, all for a missing table or bullets.
+- **Scoring:** expected figures are read straight from companyfacts, not through the lab's period logic, so a labelling bug can't pass its own check.
 - **Periods in the text:** the model must not write a period next to a figure, because Python already adds one.
 - **Tracing:** each answer needs one parent trace, or its retries split into several traces (R-06).
 
