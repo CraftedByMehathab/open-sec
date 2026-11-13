@@ -55,7 +55,7 @@ None yet. `npm run evals` scores the agent against `evals/` and reports each tar
 
 ## Known gaps
 
-- **Segment figures:** companyfacts has no dimensional (segment) facts, such as NVIDIA's Data Center revenue. Answering those from XBRL means parsing each filing's XBRL instance, which no phase covers yet.
+- **Segment figures:** companyfacts has no segment facts, such as NVIDIA's Data Center revenue. Phase 1 reads them from each filing's inline XBRL.
 - **pytest:** not yet in `npm run check`. It joins in Phase 1 with the first product code.
 - **Cost:** not computed yet, because `PRICE_INPUT_PER_MTOK` and `PRICE_OUTPUT_PER_MTOK` are empty.
 - **Companies:** the other 18 wait on SPEC open question 1.

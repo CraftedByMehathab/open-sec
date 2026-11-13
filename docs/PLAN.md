@@ -73,8 +73,9 @@ Success criteria:
 
 Load filings and XBRL into Postgres, repeatably.
 
-- `ingest/` owns the models and Alembic migrations: companies, filings, chunks (Item, offsets, embedding, `tsvector`), XBRL facts (with restated flag).
+- `ingest/` owns the models and Alembic migrations: companies, filings, chunks (Item, offsets, embedding, `tsvector`), XBRL facts (with restated flag, and segment dimensions such as `Data Center`).
 - Four modules: `edgar_client`, `filing_parser`, `xbrl_facts`, `loader`.
+- `xbrl_facts` also reads segment facts from each filing's inline XBRL, in the cached `.htm`, because companyfacts has none. No extra EDGAR requests.
 - pytest at 80% coverage joins `npm run check` and the pre-commit hook.
 - `uv run -m ingest` loads `data/tickers.yaml`; `uv run -m ingest AMD` loads one ticker; reruns skip loaded filings.
 
@@ -85,6 +86,7 @@ Success criteria:
 - [ ] A test confirms a restated fact is flagged and both values are kept (R-09).
 - [ ] Loading AMD and NVIDIA matches the EDGAR submissions list; a rerun adds nothing.
 - [ ] AMD's FY2025 revenue in the database matches companyfacts (R-08).
+- [ ] NVIDIA's Data Center revenue for FY2026 is loaded as a segment fact and matches the value tagged in its 10-K (R-08).
 - [ ] `npm run check:python` passes at 80% coverage.
 
 ## Phase 2: The agent
