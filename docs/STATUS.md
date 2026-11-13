@@ -1,6 +1,6 @@
 # Status
 
-Nothing is built yet. The docs in `docs/` are ready; the next step is "Please plan the pilot".
+Nothing is built yet. The docs in `docs/` are ready; the pilot plan is in `docs/PLAN.md`, waiting for review of its decisions.
 
 ## What's built
 
